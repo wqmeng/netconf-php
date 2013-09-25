@@ -1,4 +1,4 @@
-netconf-php
-===========
+NETCONF PHP API's
 
-NETCONF PHP Toolkit
+A set of PHP API's to manage JUNOS devices over NETCONF. These are not yet production ready, please feel 
+free to contribute to the project :)  
