@@ -1,5 +1,5 @@
-netconf
-=======
+netconf-php
+===========
 
 This library is a simple NETCONF client based on [RFC6241](http://tools.ietf.org/html/rfc6241) and [RFC6241](http://tools.ietf.org/html/rfc6242) (although not fully compliant yet)
 
