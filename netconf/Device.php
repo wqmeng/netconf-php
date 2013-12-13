@@ -108,7 +108,6 @@ class Device {
                     $flag = false;
                     break;
                 case "NOPASSPHRASE":
-                    echo "hello";
                     $this->send_hello($this->hello_rpc);
                     $flag = false;
                     break;
@@ -176,7 +175,6 @@ class Device {
             if (!$this->starts_with($rpc,"<rpc>")) {
                 $rpc = "<rpc><".$rpc."/></rpc>";
                 $rpc.="]]>]]>";
-                echo $rpc;
             }
             $rpc_reply_string = $this->get_rpc_reply($rpc);
         }
@@ -519,7 +517,6 @@ class Device {
         $rpc.="]]>]]>\n";
         $rpcReply = $this->get_rpc_reply($rpc);
         $this->last_rpc_reply = $rpcReply;
-        echo $rpcReply;
         if ($this->has_error() || !$this->is_ok())
             return false;
         return true;
