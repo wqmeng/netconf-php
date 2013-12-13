@@ -23,6 +23,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” 
 
 The views and conclusions contained in the software and documentation are those of the authors and should not be interpreted as representing official policies, either expressed or implied, of Juniper Networks.
 
+Dependancies
+------------
+The API requires installation of PHP extension for expect library.
+http://pecl.php.net/package/expect
+
 Authors and Contributors
 ------------------------
 * [Ankit Jain](http://www.linkedin.com/in/ankitj093), Juniper Networks 
