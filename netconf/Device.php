@@ -117,9 +117,6 @@ class Device {
                     break;
                 case "SHELL":
                     break;
-                case "WRONG":
-                    throw new NetconfException("Wrong username or password");
-                    break;
                 default:
                     throw new NetconfException("Device not found");
                 }
