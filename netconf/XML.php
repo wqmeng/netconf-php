@@ -17,19 +17,19 @@ include('XMLBuilder.php');
  * 
  */
 class XML {
-    var $activeElement;
-    var $ownerDoc;
+    var $active_element;
+    var $owner_doc;
 
     public function XML($active,$document) {
-        $this->activeElement = $active;
-        $this->ownerDoc = $document;
+        $this->active_element = $active;
+        $this->owner_doc = $document;
     }
 
     /**
     *Get the owner Document for the XML object.
     */
-    public function getOwnerDocument() {
-        return $this->ownerDoc;
+    public function get_owner_document() {
+        return $this->owner_doc;
     }
 
     /**
@@ -39,8 +39,8 @@ class XML {
     *@param value
     *      The value of the attribute.
     */
-    public function setAttribute($name,$value) {
-        $this->activeElement->setAttribute($name,$value);
+    public function set_attribute($name,$value) {
+        $this->active_element->set_attribute($name,$value);
     }
 
     /**
@@ -48,15 +48,15 @@ class XML {
     *@param text
     *        The text value to be set.
     */
-    public function setText($text) {
-        $firstChild = $this->activeElement->firstChild;
+    public function set_text($text) {
+        $firstChild = $this->active_element->firstChild;
         if ($firstChild == null) {
-            $textNode = $this->ownerDoc->createTextNode($text);
-            $this->activeElement->appendChild($textNode);
+            $textNode = $this->owner_doc->createTextNode($text);
+            $this->active_element->appendChild($textNode);
         }
         else if ($firstChild->nodeType != 3) {
             $textNode = $this->domDocument->createNextNode($text);
-            $this->activeElement->appendChild($textNode);
+            $this->active_element->appendChild($textNode);
         }
         else
             $firstChild->nodeValue = $text;
@@ -66,42 +66,42 @@ class XML {
     *Sets the attribute ("delete","delete") fpr the active element of 
     *XML object.
     */
-    public function junosDelete() {
-        $this->activeElement->setAttribute("delete","delete");
+    public function junos_delete() {
+        $this->active_element->set_attribute("delete","delete");
     }
 
     /**
     *Sets the attribute ("active","active") for the active element of
     *XML object.
     */
-    public function junosActive() {
-        $this->activeElement->setAttribute("active","active");
+    public function junos_active() {
+        $this->active_element->set_attribute("active","active");
     }
 
     /**
     *Sets the attribute ("inactive","inactive") for the active element of 
     *XML object.
     */
-    public function junosDeactivate() {
-        $this->activeElement->setAttribute("inactive","inactive");
+    public function junos_deactivate() {
+        $this->active_element->set_attribute("inactive","inactive");
     }
 
     /**
     *Sets the attribute ("rename") and ("name") for the active element of
     *XML object.
     */
-    public function junosRename($toBeRenamed,$newName) {
-        $this->activeElement->setAttribute("rename",$toBeRenamed);
-        $this->activeElement->setAttribute("name",$newName);
+    public function junos_rename($toBeRenamed,$newName) {
+        $this->active_element->set_attribute("rename",$toBeRenamed);
+        $this->active_element->set_attribute("name",$newName);
     }
 
     /**
     *Sets the attribute ("insert") and ("name") for the active eleent of 
     *XML object.
     */
-    public function junosInsert($before,$name) {
-        $this->activeElement->setAttribute("insert",$before);
-        $this->activeElement->setAttribute("name",$name);
+    public function junos_insert($before,$name) {
+        $this->active_element->set_attribute("insert",$before);
+        $this->active_element->set_attribute("name",$name);
     }
 
     private function is_assoc($arr)
@@ -136,25 +136,25 @@ class XML {
             die("Invalid number of arguments");
         if ($numOfArgs == 2) {
             if (!is_array(func_get_arg(1)) && !$this->is_assoc(func_get_arg(1))) {
-                $newElement = $this->ownerDoc->createElement(func_get_arg(0));
-                $textNode = $this->ownerDoc->createTextNode(func_get_arg(1));
-                $this->activeElement->appendChild($newElement);
+                $newElement = $this->owner_doc->createElement(func_get_arg(0));
+                $textNode = $this->owner_doc->createTextNode(func_get_arg(1));
+                $this->active_element->appendChild($newElement);
                 $newElement->appendChild($textNode);
-                return new XML($newElement,$this->ownerDoc);
+                return new XML($newElement,$this->owner_doc);
             }
             else if (gettype(func_get_arg(1)) == "array" && !$this->is_assoc(func_get_arg(1))) {
                 foreach (func_get_arg(1) as $text) {
-                    $newElement = $this->ownerDoc->createElement(func_get_arg(0));
-                    $textNode = $this->ownerDoc->createTextNode($text);
-                    $this->activeElement->appendChild($newElement);
+                    $newElement = $this->owner_doc->createElement(func_get_arg(0));
+                    $textNode = $this->owner_doc->createTextNode($text);
+                    $this->active_element->appendChild($newElement);
                     $newElement->appendChild($textNode);
                 }
                 return null;
             }
             else if ($this->is_assoc(func_get_arg(1))) {
-                $newElement = $this->ownerDoc->createElement(func_get_arg(0));
-                $this->activeElement->appendChild($newElement);
-                $newXML = new XML($newElement,$this->ownerDoc);
+                $newElement = $this->owner_doc->createElement(func_get_arg(0));
+                $this->active_element->appendChild($newElement);
+                $newXML = new XML($newElement,$this->owner_doc);
                 $newXML->append(func_get_arg(1));
                 return $newXML;
             }
@@ -166,9 +166,9 @@ class XML {
                 }
             }
             else {
-                $newElement = $this->ownerDoc->createElement(func_get_arg(0));
-                $this->activeElement->appendChild($newElement);
-                return new XML($newElement,$this->ownerDoc);
+                $newElement = $this->owner_doc->createElement(func_get_arg(0));
+                $this->active_element->appendChild($newElement);
+                return new XML($newElement,$this->owner_doc);
             }
         }
     }
@@ -182,14 +182,14 @@ class XML {
     *<li>An element and a text value: Append a sibling element, with text,
     *with the active element of XML object.</li></ol>
     */
-    public function addSibling() {
+    public function add_sibling() {
         $numOfArgs = func_num_args();
         if ($numOfArgs < 1 && $numOfArgs> 2)
             die("Invalid number of arguments");
-        $newElement = $this->ownerDoc->createElement(func_get_arg(0));
-        $parentNode = $this->activeElement->parentNode;
+        $newElement = $this->owner_doc->createElement(func_get_arg(0));
+        $parentNode = $this->active_element->parentNode;
         if ($numOfArgs == 2) {
-            $textNode = $this->ownerDoc->createTextNode(func_get_arg(1));
+            $textNode = $this->owner_doc->createTextNode(func_get_arg(1));
             $newElement->appendChild($textNode);
         }
         $parentNode->appendChild($newElement);
@@ -207,22 +207,22 @@ class XML {
     *each entry containing element name as the key and text value as the 
     *key cvalue.</li></ol>
     */
-    public function addSiblings() {
+    public function add_siblings() {
         $numOfArgs = func_num_args();
         if ($numOfArgs < 1 && $numOfArgs >2)
             die("Invalid number of arguments");
-        $parentNode = $this->activeElement->parentNode;
+        $parentNode = $this->active_element->parentNode;
         if ($numOfArgs == 1 && $this->is_assoc(func_get_arg(0))) {
-            $inter = $this->activeElement;
-            $this->activeElement = $parentNode;
+            $inter = $this->active_element;
+            $this->active_element = $parentNode;
             foreach (func_get_arg(0) as $property => $value)
                  $this->append($property,$value);
-            $this->activeElement = $inter;
+            $this->active_element = $inter;
         }
         else {
             foreach (func_get_arg(1) as $text) {
-                $element = $this->ownerDoc->createElement(func_get_arg(0));
-                $textNode = $this->ownerDoc->createTextNode($text);
+                $element = $this->owner_doc->createElement(func_get_arg(0));
+                $textNode = $this->owner_doc->createTextNode($text);
                 $element->appendChild($textNode);
                 $parentNode->appendChild($element);
             }
@@ -243,23 +243,23 @@ class XML {
     *       The path should be "a/b/c"
     *@return The modified XML.
     */
-    public function addPath($path) {
+    public function add_path($path) {
         $elements = explode("/",$path);
         $newElement = null;
         foreach ($elements as $value) {
-            $newElement = $this->ownerDoc->createElement($value);
-            $this->activeElement->appendChild($newElement);
-            $this->activeElement = $newElement;
+            $newElement = $this->owner_doc->createElement($value);
+            $this->active_element->appendChild($newElement);
+            $this->active_element = $newElement;
         }
-        return new XML($newElement,$this->ownerDoc);
+        return new XML($newElement,$this->owner_doc);
     }
 
     /**
     *Get the XML String of the XML object.
     *@return the XML data as a string
     */
-    public function toString() {
-        $str = $this->ownerDoc->saveXML();
+    public function to_string() {
+        $str = $this->owner_doc->saveXML();
         return $str;
     }
 
@@ -278,8 +278,8 @@ class XML {
      *          "name~FPC 0 CPU","temperature"}
      * @return The text value of the element.
     */
-    public function findValue($list) {
-        $root = $this->ownerDoc->documentElement;
+    public function find_value($list) {
+        $root = $this->owner_doc->documentElement;
         $nextElement = $root;
         $nextElementFound = false;
         for ($k = 0; $k < sizeof($list); $k++) {
