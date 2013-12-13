@@ -8,7 +8,7 @@
  * <ol>
  * <li>creates a {@link #XMLBuilder() XMLBuilder} object.</li>
  * <li>create an RPC as an XML object.</li>
- * <li>Call the executeRPC(XML) method on Device</li>
+ * <li>Call the execute_rpc(XML) method on Device</li>
  * </ol>
 */
 class XMLBuilder {
@@ -28,7 +28,7 @@ class XMLBuilder {
     *The first argument will be at topmost hierarchy and so on.
     *@return XML object.
     */
-    public function createNewConfig() {
+    public function create_new_config() {
         $newelement = "";
         $domdocument = $this->dom->createDocument(null,"configuration");
         $domdocument->formatOutput = true;
@@ -60,7 +60,7 @@ class XMLBuilder {
     *The first argument will be at topmost hierarchy and so on.
     *@return XML object.
     */
-    public function createNewRPC() {
+    public function create_new_rpc() {
         $newelement = "";
         $domdocument = $this->dom->createDocument(null,"rpc");
         $domdocument->formatOutput = true;
@@ -92,7 +92,7 @@ class XMLBuilder {
     *The first argument will be at topmost hierarchy and so on.
     *@return XML object.
     */
-    public function createNewXML() {
+    public function create_new_xml() {
         $newelement = "";
         $domdocument->formatOutput = true;
         if (is_array(func_get_arg(0))) {
