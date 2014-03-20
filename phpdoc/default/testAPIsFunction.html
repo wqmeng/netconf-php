@@ -3,13 +3,13 @@
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class XMLBuilder</title>
+			<title>Docs For Class testAPIsFunction</title>
 			<link rel="stylesheet" href="../media/stylesheet.css" />
 			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
 		</head>
 		<body>
 			<div class="page-body">			
-<h2 class="class-name">Class XMLBuilder</h2>
+<h2 class="class-name">Class testAPIsFunction</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -22,15 +22,14 @@
 					</div>
 	<div class="info-box-body">
         		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">An <div class="src-code"><ol><li><div class="src-line"><a href="../default/XMLBuilder.html#methodXMLBuilder">XMLBuilder</a></div></li>
-</ol></div> is used to create an XML object.This is useful to create XML RPC's and configurations.</p>
-<p class="description"><p>As an example, one  <ol><li>creates a #XMLBuilder() object.</li><li>create an RPC as an XML object.</li><li>Call the execute_rpc(XML) method on Device</li></ol></p></p>
 		<p class="notes">
-			Located in <a class="field" href="_netconf---XMLBuilder.php.html">/netconf/XMLBuilder.php</a> (line <span class="field">14</span>)
+			Located in <a class="field" href="_TestCases---testAPIsFunction.php.html">/TestCases/testAPIsFunction.php</a> (line <span class="field">3</span>)
 		</p>
 		
 				
-		<pre></pre>
+		<pre>PHPUnit_Framework_TestCase
+   |
+   --testAPIsFunction</pre>
 	
 			</div>
 </div>
@@ -51,7 +50,7 @@
 			<div class="var-summary">
 																								<div class="var-title">
 					<span class="var-type">mixed</span>
-					<a href="#$dom" title="details" class="var-name">$dom</a>
+					<a href="#$d" title="details" class="var-name">$d</a>
 				</div>
 											</div>
 		</div>
@@ -69,25 +68,20 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																				
+																												
 												<div class="method-definition">
-											<span class="method-result">XMLBuilder</span>
-										<a href="#XMLBuilder" title="details" class="method-name">XMLBuilder</a>
+											<span class="method-result">void</span>
+										<a href="#setup" title="details" class="method-name">setup</a>
 										()
 									</div>
 																<div class="method-definition">
-											<span class="method-result"><a href="../default/XML.html">XML</a></span>
-										<a href="#create_new_config" title="details" class="method-name">create_new_config</a>
+											<span class="method-result">void</span>
+										<a href="#testConnection" title="details" class="method-name">testConnection</a>
 										()
 									</div>
 																<div class="method-definition">
-											<span class="method-result"><a href="../default/XML.html">XML</a></span>
-										<a href="#create_new_rpc" title="details" class="method-name">create_new_rpc</a>
-										()
-									</div>
-																<div class="method-definition">
-											<span class="method-result"><a href="../default/XML.html">XML</a></span>
-										<a href="#create_new_xml" title="details" class="method-name">create_new_xml</a>
+											<span class="method-result">void</span>
+										<a href="#testlock" title="details" class="method-name">testlock</a>
 										()
 									</div>
 								</div>
@@ -107,18 +101,21 @@
 							
 					</div>
 		<div class="info-box-body">
-			<a name="var$dom" id="$dom"><!-- --></A>
-<div class="evenrow">
+			<a name="var$d" id="$d"><!-- --></A>
+<div class="oddrow">
 
 	<div class="var-header">
 		<span class="var-title">
 			<span class="var-type">mixed</span>
-			<span class="var-name">$dom</span>
-						(line <span class="line-number">15</span>)
+			<span class="var-name">$d</span>
+						(line <span class="line-number">5</span>)
 		</span>
 	</div>
 
 	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
 	
 	
 		
@@ -141,49 +138,22 @@
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
 
-<a name="methodXMLBuilder" id="XMLBuilder"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">Constructor XMLBuilder</span> (line <span class="line-number">20</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Prepares a new</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">XMLBuilder</span>
-		<span class="method-name">
-			XMLBuilder
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodcreate_new_config" id="create_new_config"><!-- --></a>
+<a name="methodsetup" id="setup"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">create_new_config</span> (line <span class="line-number">31</span>)
+		<span class="method-title">setup</span> (line <span class="line-number">7</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Create a new configuration as an XML object.</p>
-<p class="description"><p>This function takes multiple no of arguments. And can be one elment two elements or a list of elements. The first argument will be at topmost hierarchy and so on.</p></p>
 	<ul class="tags">
-				<li><span class="field">return:</span> object.</li>
-				<li><span class="field">access:</span> public</li>
+				<li><span class="field">access:</span> protected</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result"><a href="../default/XML.html">XML</a></span>
+		<span class="method-result">void</span>
 		<span class="method-name">
-			create_new_config
+			setup
 		</span>
 				()
 			</div>
@@ -191,25 +161,22 @@
 		
 			
 	</div>
-<a name="methodcreate_new_rpc" id="create_new_rpc"><!-- --></a>
+<a name="methodtestConnection" id="testConnection"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">create_new_rpc</span> (line <span class="line-number">63</span>)
+		<span class="method-title">testConnection</span> (line <span class="line-number">12</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Create a new RPC as an XML object.</p>
-<p class="description"><p>This function takes multiple no of arguments. And can be one elment two elements or a list of elements. The first argument will be at topmost hierarchy and so on.</p></p>
 	<ul class="tags">
-				<li><span class="field">return:</span> object.</li>
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result"><a href="../default/XML.html">XML</a></span>
+		<span class="method-result">void</span>
 		<span class="method-name">
-			create_new_rpc
+			testConnection
 		</span>
 				()
 			</div>
@@ -217,25 +184,22 @@
 		
 			
 	</div>
-<a name="methodcreate_new_xml" id="create_new_xml"><!-- --></a>
+<a name="methodtestlock" id="testlock"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">create_new_xml</span> (line <span class="line-number">95</span>)
+		<span class="method-title">testlock</span> (line <span class="line-number">29</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Create a new XML as an XML object.</p>
-<p class="description"><p>This function takes multiple no of arguments. And can be one elment two elements or a list of elements. The first argument will be at topmost hierarchy and so on.</p></p>
 	<ul class="tags">
-				<li><span class="field">return:</span> object.</li>
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result"><a href="../default/XML.html">XML</a></span>
+		<span class="method-result">void</span>
 		<span class="method-name">
-			create_new_xml
+			testlock
 		</span>
 				()
 			</div>
@@ -249,7 +213,7 @@
 
 
 	<p class="notes" id="credit">
-		Documentation generated on Fri, 28 Feb 2014 11:44:21 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+		Documentation generated on Thu, 27 Feb 2014 13:55:59 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
 	</p>
 	</div></body>
 </html>

@@ -1,0 +1,55 @@
+Prerequites:
+
+The NETCONF PHP APIs depends on expect package of php http://pecl.php.net/package/expect
+
+Setting up system (installing PHP and its extension) before installing NETCONF PHP APIs in Ubuntu (all steps are mandatory)
+1. Install PHP
+apt-get install php5 (depends on latest version).
+2. Install PHP Development Framework
+apt-get install php5-dev (depends on latest version).
+3. Install php-pear (PHP Extension and Application Repository), needed to install php extensions
+apt-get install php-pear
+4. Install Tool command language (TCL) and TK, it is necessary for installing expect package 
+apt-get install tcl tcl-dev 
+apt-get install tk tk-dev
+5. Install Expect package which will be needed in building php-expect
+apt-get install expect expect-dev
+6. Install php-expect using pecl, 
+pecl install expect
+Sometime it may give error regarding channel, then use the path mentioned in the suggestion like
+pecl install channel://pecl.php.net/expect-0.3.1
+After successful installation of expect package, add the following line under extension in php.ini file (this will also be shown after successful installation of expect function)   	
+extension = expect.so
+Note: These installation steps are tested in Ubuntu version 12.04LTS and greater.
+
+Setting up system in Fedora/Centos before installing NETCONF PHP APIs
+1. Install PHP and its Development Framework
+yum install php php-devel php-common
+2. Install php-pear (PHP Extension and Application Repository), needed to install php extensions
+yum install php-pear
+to check whether pear is installed properly or not, type command pear, there you will get list of command like discover-channel, upgrade,upgrade-all, if pear is successfully installed.
+3. Install Tool command language (TCL) and TK, it is necessary for installing expect package 
+yum install tcl tcl-dev 
+yum install tk tk-dev
+4. Install Expect package which will be needed in building php-expect
+yum install expect expect-dev
+5. Install php-expect using pecl
+pecl install expect
+sometime it may give error regarding channel, then use the path mentioned in the suggestion like
+pecl install channel://pecl.php.net/expect-0.3.1
+After successful installation of expect package, add the following line under extension in php.ini file (this will also be shown after successful installation of expect function) 
+extension = expect.so
+Note: These installation steps are successfully tested in Fedora 15 i686 and Centos-6.5-i386 and Ubuntu 12.04LTS and higher version.
+
+Before installing NETCONF PHP APIs make sure your system has all the requirements. 
+1. wget  -O /default/path/of/php/netconf-php-master.zip https://github.com/Juniper/netconf-php/archive/master.zip 
+(usually default path of php is /usr/share/php)
+2. unzip netconf-php-master.zip
+3. rm  -r netconf-php-master.zip (Optional)
+include this path in your API for device.php or other API classes.
+For example while writing your code, include path 
+include(“netconf-php-master/netconf/Device.php”)
+                                     or 
+include(“netconf-php-master/netconf/XML.php”)
+
+

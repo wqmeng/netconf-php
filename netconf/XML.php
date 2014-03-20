@@ -63,7 +63,7 @@ class XML {
     }
 
     /**
-    *Sets the attribute ("delete","delete") fpr the active element of 
+    *Sets the attribute ("delete","delete") for the active element of 
     *XML object.
     */
     public function junos_delete() {
@@ -114,20 +114,20 @@ class XML {
     *This function takes variable no of arguments.
     *<ol>
     *<li> only element: Append an element under the active element 
-    *of XML object. The new element now becomes teh active element.</li> 
+    *of XML object. The new element now becomes the active element.</li> 
     *<li>one element and one text : Append an element, with text, under the 
     *active element of XML object. The new element now becomes 
     *the active element.</li> 
     *<li>one element and an arrya of text values : Append multiple elements, 
-    *with same name but differnet text under the active element of XML object.</li>
+    *with same name but differrent text under the active element of XML object.</li>
     *<li>An associative array : Append multiple elements with different names 
     *and different text, under the active element of XML object.In this, 
     *each entry contains element name as the key and text value as the 
     *key value.</li>
     *<li>An element and an associative array : Append an element under the 
-    *active element of XML object. The new element now vecomes the 
+    *active element of XML object. The new element now becomes the 
     *active element.Then,append multiple elements wiht different names 
-    *and differnet text, under the new active element.</li></ol>
+    *and different text, under the new active element.</li></ol>
     *@return The modified XML after apending the element.
     */
     public function append() {
@@ -200,12 +200,12 @@ class XML {
     *This function takes variable number of arguments.
     *<ol>
     *<li>An element and an array of text values : Add multiple sibling elements,
-    *with same names but different text, with teh active element of XML object.
+    *with same names but different text, with the active element of XML object.
     *</li>
-    *<li>An associative array : Add multiple siblings with differnet names 
+    *<li>An associative array : Add multiple siblings with different names 
     *and different text, with the active element of XML objcet.In this, 
     *each entry containing element name as the key and text value as the 
-    *key cvalue.</li></ol>
+    *key value.</li></ol>
     */
     public function add_siblings() {
         $numOfArgs = func_num_args();
@@ -231,7 +231,7 @@ class XML {
 
     /**
     *Append multiple elements under the active element of XML object, 
-    *by specifying the path. The bottomost hierarchy element now becomes 
+    *by specifying the path. The bottom most hierarchy element now becomes 
     *the active element.
     *@param path
     *      The path to be added. For example, to add the hierarchy:

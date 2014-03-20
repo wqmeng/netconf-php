@@ -15,7 +15,7 @@ class XMLBuilder {
     var $dom;
 
     /**
-    *Prepares a new <code>XMLBuilder<code/> oobject.
+    *Prepares a new <code>XMLBuilder<code/> object.
     */
     public function XMLBuilder() {
         $this->dom = new DOMImplementation();
