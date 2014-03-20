@@ -34,7 +34,7 @@ INSTALLATION
         * rm  -r netconf-php-master.zip (Optional)
         include this path in your API for device.php or for other classes
         For example while writing your code, include path 
-        include(“netconf-php-master/netconf/Device.php”)
+        include(ï¿½netconf-php-master/netconf/Device.phpï¿½)
 
 SYNOPSIS
 ========
@@ -98,8 +98,4 @@ Dependancies
 ============
 The API requires installation of PHP extension for expect library.
 http://pecl.php.net/package/expect
-
-Authors and Contributors
-========================
-* [Ankit Jain](http://www.linkedin.com/in/ankitj093), Juniper Networks 
 
