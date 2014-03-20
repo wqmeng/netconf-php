@@ -1,5 +1,5 @@
 <?php
-include('netconf-php-master/netconf/Device.php');
+include('netconf/Device.php');
 
 //creating a new device and establishing netconf session
 $d= new Device("hostname", "username", "passwd");

@@ -1,4 +1,4 @@
-netconf-php
+NETCONF-PHP
 ============
 
 PHP library for NETCONF
@@ -6,42 +6,45 @@ PHP library for NETCONF
 SUPPORT
 =======
 
-This software is not officially supported by Juniper Networks, but by a team dedicated to helping customers,partners, and the development community.  To report bug-fixes, issues, suggestions, please contact netconf-automation-hackers@juniper.net
+This software is not officially supported by Juniper Networks,but by a team dedicated to helping customers, partners and the development community.To report bug-fixes, issues, suggestion please contact netconf-automation-hackers@juniper.net
 
 FEATURES
 ========
 
-PHP NETCONF APIs are designed to provide the same capabilties that a user would have on the Junos CLI, but in an environment built for automation tasks.  These capabiltieis include, but are not limited to:
+PHP NETCONF APIs are designed to provide the same capabilties that a user would have on the Junos CLI, but in an environment built for automation tasks.These capabilities include, but are not limited to:
 
-* Remote connectivty and management of Junos devices via NETCONF
-* Provide "facts" about the device such as software-version, serial-number, etc.
-* Retrieve "operational" or "run-state" information 
-* Retrieve configuration information 
-* Make configuration changes in unstructured and structured ways
+* Remote connectivity and management of Junos devices via NETCONF.
+* Provide "facts" about the device such as software-version, serial-number etc.
+* Retrieve "operational" or "run-state" information.
+* Retrieve configuration information.
+* Make configuration changes in unstructured and structured ways.
 
 REQUIREMENTS
 ============
 
-Installation requires Php and php-expect module.This module is successfully tested in php5.5.3 
+Installation requires Php and php-expect module. PHP-NETCONF_APIs are successfully tested in php5.5.3 
 
 INSTALLATION
 ============
-        
-        Note: These installation steps are successfully tested in Fedora 15 i686 and Centos-6.5-i386 and Ubuntu
-        12.04LTS and higher version.
-        * wget  -O /default/path/of/php/netconf-php-master.zip https://github.com/Juniper/netconf-php/archive/master.zip           (usually default path of php is /usr/share/php)
-        * unzip netconf-php-master.zip
-        * rm  -r netconf-php-master.zip (Optional)
-        include this path in your API for device.php or for other classes
-        For example while writing your code, include path 
-        include(�netconf-php-master/netconf/Device.php�)
+Note: These installation steps are successfully tested in Fedora 15 i686 and Centos-6.5-i386 and Ubuntu12.04LTS and higher version.
+
+       Before installing PHP-NETCONF-API make sure that you have installed all the requirements.
+       For detailed steps about installation, refer to INSTALL.md file.
+	
+       Download netconf-php folder in zip form at any path in your Desktop
+       * wget  -O /any/path/in/Desktop/netconf-php-master.zip https://github.com/Juniper/netconf-php/archive/master.zip           (usually default path of php is /usr/share/php)
+       * unzip netconf-php-master.zip
+       * Copy netconf folder in /usr/share/php (default php path)
+       include this path in your API for Device.php 
+       For example while writing your code, include path 
+       include('netconf/Device.php')
 
 SYNOPSIS
 ========
         <?php
-        include('netconf-php-master/netconf/Device.php');
+        include('netconf/Device.php');
         //creating a new device and establishing NETCONF session
-        $d= new Device("hostname", "username", "passwd",null);
+        $d= new Device("hostname", "username", "passwd");
         $d->connect();
         echo "connected to device";
         //getting reply from server using execute_rpc() method
@@ -60,7 +63,7 @@ SYNOPSIS
         ?>
 
         Sample Output:
-  
+  	    <rpc-reply xmlns=".......">
             <system-information>
             <hardware-model>olive</hardware-model>
             <os-name>junos</os-name>
@@ -94,8 +97,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” 
 
 The views and conclusions contained in the software and documentation are those of the authors and should not be interpreted as representing official policies, either expressed or implied, of Juniper Networks.
 
-Dependancies
+Dependencies
 ============
 The API requires installation of PHP extension for expect library.
 http://pecl.php.net/package/expect
+
+Authors and Contributors
+========================
+* [Ankit Jain](http://www.linkedin.com/in/ankitj093), Juniper Networks 
 

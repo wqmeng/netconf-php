@@ -185,8 +185,7 @@ class Device {
             $rpc_reply_string = $this->get_rpc_reply($rpcString);
         }
         $this->last_rpc_reply = $rpc_reply_string;
-	echo $rpc_reply_string;
-        $rpc_reply = $this->convert_to_xml($rpc_reply_string);
+	$rpc_reply = $this->convert_to_xml($rpc_reply_string);
 	return $rpc_reply;
     }
 
@@ -825,7 +824,8 @@ class Device {
     */        
     public function __call($function,$args){
 	$change=preg_replace('/_/','-',$function);
-	$this->execute_rpc($change);
+	$reply=$this->execute_rpc($change);
+	return $reply;
     } 
 }
 
