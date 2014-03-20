@@ -35,8 +35,7 @@ class Device {
                 $this->hello_rpc = $this->create_hello_rpc(func_get_arg(3));
                 $this->port = 830;
             }
-
-            else {
+           else {
                 $this->port = func_get_arg(3);
                 $this->hello_rpc = $this->default_hello_rpc();
             }
@@ -66,13 +65,13 @@ class Device {
     *Prepares a new <code?Device</code> object, either with default 
     *client capabilities and default port 830, or with user specified
     *capabilities and port no, which can then be used to perform netconf 
-    *op!erations.
+    *operations.
     */
     public function connect() {
         $this->stream = expect_popen("ssh $this->userName@$this->hostName -p $this->port -s netconf");
         $flag = true;
         while ($flag) {
-            switch (expect_expectl($this->stream,array (
+        switch (expect_expectl($this->stream,array (
                 array("Password:","PASSWORD"),
                 array("yes/no)?","YESNO"),
                 array("passphrase","PASSPHRASE"),
@@ -80,7 +79,7 @@ class Device {
                 array(" ","SHELL"),
                   ))) {
                 case "PASSWORD":
-                    fwrite($this->stream,$this->password."\n");
+		    fwrite($this->stream,$this->password."\n");
                     switch (expect_expectl($this->stream,array (
                         array("Password:","PASSWORD"),
                         array("]]>]]>","hello"),
@@ -112,7 +111,7 @@ class Device {
                     $flag = false;
                     break;
                 case "YESNO":
-                    fwrite($this->stream,"yes\n");
+                    fwrite($this->stream,"yes\n");  // default value of yes for for new netconf host
                     break;
                 case "SHELL":
                     break;
@@ -121,7 +120,7 @@ class Device {
                 }
         }
         $this->is_connected = true;
-    }
+}
 
    /**
    Sends the Hello capabilities to the netconf server.
@@ -131,27 +130,30 @@ class Device {
         $reply = $this->get_rpc_reply($hello);
         $serverCapability = $reply;
         $this->last_rpc_reply = $reply;
-    }
+        }
 
     /**
-    *Sends the RPC as a strung and returns the response as a string.
+    *Sends the RPC as a string and returns the response as a string.
     */
     private function get_rpc_reply($rpc) {
         $rpc_reply = "";
-        fwrite($this->stream,$rpc."\n");
-        while (1) {
+	fwrite($this->stream,$rpc."\n");
+	while (1) {
             $line = fgets($this->stream);
             if (strncmp($line,"<rpc>",5)==0)
                 if (strpos($line,"]]>]]>"))
-                    continue;
+                    continue;    
                 else {
-                    while (1) {
-                        $line = fgets($this->stream);
-                        if (strpos($line,"]]>]]>")) {
-                            $line = fgets($this->stream);
+                 while (1)
+		{
+			$line = fgets($this->stream);
+			if (strpos($line,"]]>]]>"))
+			 {
+					
+                            $line = fgets($this->stream); 
                             break;
-                        }
-                    }
+                          }
+                }
                 }
             if ((strncmp($line,"]]>]]>",6))==0)
                 break;
@@ -183,22 +185,23 @@ class Device {
             $rpc_reply_string = $this->get_rpc_reply($rpcString);
         }
         $this->last_rpc_reply = $rpc_reply_string;
+	echo $rpc_reply_string;
         $rpc_reply = $this->convert_to_xml($rpc_reply_string);
-        return $rpc_reply;
+	return $rpc_reply;
     }
 
     /**
     *Converts the string to XML.
     *@return XML object.
     */
-    private function convert_to_xml($rpc_reply) {
+     private function convert_to_xml($rpc_reply) {
         $dom = new DomDocument();
         $xml = $dom->loadXML($rpc_reply);
         if (!$xml)
             return false;
         $root = $dom->documentElement;
         return new XML($root,$dom);
-    }
+      }
 
     /*
     @retrun the last RPC Reply sent by Netconf server.
@@ -214,7 +217,7 @@ class Device {
     */
     public function set_username($username) {
         if ($this->is_connected)
-            throw new NetconfException("Can't change username on a live device. Close the device first.");
+           throw new NetconfException("Can't change username on a live device. Close the device first.");
         else
             $this->userName =   $username;
     }
@@ -237,10 +240,10 @@ class Device {
     *     is the password which is to be set.
     */
     public function set_password($password) {
-        if ($this->is_connected)
-            throw new NetconfException("Can't change the password for the live device. Close the device first");
-        else
-            $this->password = $password;
+     if ($this->is_connected)
+     throw new NetconfException("Can't change the password for the live device. Close the device first");
+     else
+     $this->password = $password;
     }
 
     /**
@@ -249,10 +252,10 @@ class Device {
     *     is the port no. which is to be set.
     */
     public function set_port($port) {
-        if ($this->is_connected)
-            throw new NetconfException("Can't change the port no for the live device. Close the device first");
-        else
-            $this->port = $port;
+      if ($this->is_connected)
+      throw new NetconfException("Can't change the port no for the live device. Close the device first");
+      else
+      $this->port = $port;
     }
 
     /**
@@ -261,11 +264,12 @@ class Device {
     *       Client capabilities to be advertised to the Netconf server.
     *
     */
-    public function setCapabilities($capabilities) {
+     public function setCapabilities($capabilities) {
         if($capabilities == null)
             die("Client capabilities cannot be null");
         if($this->is_connected) {
-            throw new NetconfException("Can't change clien capabilities on a live device. Close the device first.");
+            throw new NetconfException("Can't change clien capabilities on a live device. Close the
+             device first.");
         $this->helloRpc = $this->create_hello_rpc($capabilities);
         }
     }
@@ -274,7 +278,7 @@ class Device {
     *Check if the last RPC reply returned from Netconf server has any error.
     *@return true if any errors are found in last RPC reply.
     */
-    public function has_error() {
+     public function has_error() {
         if(!$this->is_connected)
             die("No RPC executed yet, you need to establish a connection first");
         if ($this->last_rpc_reply == "" || !(strstr($this->last_rpc_reply,"<rpc-error>")))
@@ -292,7 +296,7 @@ class Device {
     *Check if the last RPC reply returned from Netconf server has any warning.
     *@return true if any warnings are found in last RPC reply.
     */
-    public function has_warning() {
+     public function has_warning() {
         if(!$this->is_connected)
             die("No RPC executed yet, you need to establish a connection first");
         if ($this->last_rpc_reply == "" || !(strstr($this->last_rpc_reply,"<rpc-error>")))
@@ -306,13 +310,12 @@ class Device {
         return false;
     }
 
-
     /**
     *Check if the last RPC reply returned from the Netconf server.
     *contain &lt;ok&gt; tag
     *@return true if &lt;ok&gt; tag is found in last RPC reply.
     */
-    public function is_ok() {        
+     public function is_ok() {        
         if(!$this->is_connected)
             die("No RPC executed yet, you need to establish a connection first");
         if ($this->last_rpc_reply!=null && strstr($this->last_rpc_reply,"<ok/>"))
@@ -324,7 +327,7 @@ class Device {
     *Locks the candidate configuration.
     *@return true if successful.
     */
-    public function lock_config() {
+     public function lock_config() {
         $rpc = "<rpc>";
         $rpc.= "<lock>";
         $rpc.="<target>";
@@ -344,13 +347,13 @@ class Device {
     *Unlocks the candidate configuration.
     *@return true if successful.
     */
-    public function unlock_config() {
+     public function unlock_config() {
         $rpc = "<rpc>";
-        $rpc.="<unlcok>";
+        $rpc.="<unlock>";
         $rpc.="<target>";
         $rpc.="<candidate/>";
         $rpc.="</target>";
-        $rpc.="</unlcok>";
+        $rpc.="</unlock>";
         $rpc.="</rpc>";
         $rpc.="]]>]]>\n";
         $rpcReply = $this->get_rpc_reply($rpc);
@@ -360,7 +363,7 @@ class Device {
         return true;
     }
 
-    private function starts_with($string,$substring) {
+     private function starts_with($string,$substring) {
         trim($substring);
         trim($string);
         $length = strlen($substring);
@@ -373,7 +376,8 @@ class Device {
     *Loads the candidate configuration, Configuration should be in XML format.
     *@param configuration
     *        Configuration, in XML fromat, to be loaded. For eg:
-    *        &lt;configuration&gt;&lt;system&gt;&lt;services&gt;&lt;ftp/&gt;&lt;/services&gt;&lt;/system&gt;&lt;/configuration&gt;
+    *        &lt;configuration&gt;&lt;system&gt;&lt;services&gt;&lt;ftp/&gt;&lt;/services&gt;&lt;/
+             system&gt;&lt;/configuration&gt;
     *       will load 'ftp' under the 'systems services' hierarchy.
     *@param loadType
     *       You can choose "merge" or "replace" as the loadType.
@@ -419,10 +423,10 @@ class Device {
     *@param loadType
     *        You can choose "merge" or "replace" as the loadType.
     */
-    public function load_text_configuration($configuration,$loadType) {
+     public function load_text_configuration($configuration,$loadType) {
         if ($loadType == null || (!($loadType == "merge") && !($loadType == "replace")))
             die ("'loadType' argument must be merge|replace\n");
-        $rpc = "<rpc>";
+	$rpc = "<rpc>";
         $rpc.="<edit-config>";
         $rpc.="<target>";
         $rpc.="<candidate/>";
@@ -439,7 +443,7 @@ class Device {
         $rpc.="</rpc>";
         $rpc.="]]>]]>\n";
         $rpcReply = $this->get_rpc_reply($rpc);
-        $this->last_rpc_reply = $rpcReply;
+	$this->last_rpc_reply = $rpcReply;
         if ($this->has_error() || !$this->is_ok())
             throw new LoadException("Load operation returned error");
     }
@@ -453,24 +457,25 @@ class Device {
     *       will load 'ftp' under the 'systems services' hierarchy.
     *To load multiple set statements, separate them by '\n' character.
     */
-    public function load_set_configuration($configuration) {
-        $rpc = "<rpc>";
+     public function load_set_configuration($configuration) {
+	$rpc = "<rpc>";
         $rpc.="<load-configuration action=\"set\">";
         $rpc.="<configuration-set>";
         $rpc.=$configuration;
         $rpc.="</configuration-set>";
         $rpc.="</load-configuration>";
-        $rpc.="</rpc>\n";
+        $rpc.="</rpc>";
+	$rpc.="]]>]]>\n";
         $rpcReply = $this->get_rpc_reply($rpc);
         $this->last_rpc_reply = $rpcReply;
-        if ($this->has_error() || !$this->is_ok())
+	if ($this->has_error() || !$this->is_ok())
             throw new LoadException("Load operation returned error");
     }
 
     /**
     *Commit the candidate configuration.
     */
-    public function commit() {
+     public function commit() {
         $rpc = "<rpc>";
         $rpc.="<commit/>";
         $rpc.="</rpc>";
@@ -488,7 +493,7 @@ class Device {
     *        Time in seconds, after which the previous active configuratio
     *        is reverted back to.
     */
-    public function commit_confirm($seconds) {
+     public function commit_confirm($seconds) {
         $rpc = "<rpc>";
         $rpc.="<commit>";
         $rpc.="<confirmed/>";
@@ -506,7 +511,7 @@ class Device {
     *Validate the candidate configuration.
     *@return true if validation successful.
     */
-    public function validate() {
+     public function validate() {
         $rpc = "<rpc>";
         $rpc.="<validate>";
         $rpc.="<source>";
@@ -526,7 +531,7 @@ class Device {
     *Reboot the device corresponding to the Netconf Session.
     *@return RPC reply sent by Netconf servcer.
     */
-    public function reboot() {
+     public function reboot() {
         $rpc = "<rpc>";
         $rpc.="<request-reboot/>";
         $rpc.="</rpc>";
@@ -541,21 +546,23 @@ class Device {
     *       Mode in which to open the configuration.
     *       Permissible mode(s) : "private"
     */
-    public function open_configuration($mode) {
+     public function open_configuration($mode) {
         $rpc = "<rpc>";
         $rpc.="<open-configuration>";
-        $rpc.=$mode;
+        $rpc.="<";
+	$rpc.=$mode;
+	$rpc.="/>";
         $rpc.="</open-configuration>";
         $rpc.="</rpc>";
         $rpc.="]]>]]>\n";
         $rpcReply = $this->get_rpc_reply($rpc);
         $this->last_rpc_reply = $rpcReply;
-    }
+	}
 
     /**
     *This method should be called to close a private session, in case its started.
     */
-    public function close_configuration() {
+     public function close_configuration() {
         $rpc = "<rpc>";
         $rpc.="<close-configuration/>";
         $rpc.="</rpc>";
@@ -571,7 +578,7 @@ class Device {
     *       the cli command to be executed.
     *@return result of the command,as a String.
     */
-    public function run_cli_command() {
+     public function run_cli_command() {
         $rpcReply = "";
         $format = "text";
         if(func_num_args() == 2)
@@ -606,13 +613,16 @@ class Device {
     *@param loadType
     *       You can choose "merge" or "replace" as the loadType.
     */
-    public function load_xml_file($configFile,$loadType) {
-        $configuration = "";
+     public function load_xml_file($configFile,$loadType) {
+	$configuration = "";
         $file = fopen($configFile,"r");
         if (!$file)
             die ("File not found error");
-        while ($line = fgets($file))
+        while(!feof($file))
+        {
+            $line=fgets($file);
             $configuration.=$line;
+        }
         fclose($file);
         if ($loadType == null ||(!($loadType == "merge") && !($loadType == "replace")))
             die("'loadType' must be merge|replace");
@@ -628,7 +638,7 @@ class Device {
     *@param loadType
     *      You can choose "merge" or "replace" as the loadType.
     */
-    public function load_text_file($configFile,$loadType) {
+     public function load_text_file($configFile,$loadType) {
         $configuration = "";
         $file = fopen($configFile,"r");
         if (!$file)
@@ -636,7 +646,7 @@ class Device {
         while ($line = fgets($file))
             $configuration.=$line;
         fclose($file);
-        if ($loadType == null || (!($loadType == "merge") && !($loadType == "replace")))
+	if ($loadType == null || (!($loadType == "merge") && !($loadType == "replace")))
             die("'loadType' argument must be merge|replace\n");
         $this->load_text_configuration($configuration,$loadType);
     }
@@ -649,7 +659,7 @@ class Device {
     *     Path name of file containing configuration, in set format, 
     *     to be loaded.
     */
-    public function load_set_file($configFile) {
+     public function load_set_file($configFile) {
         $configuration = "";
         $file = fopen($configFile,"r");
         if (!$file)
@@ -660,7 +670,7 @@ class Device {
         $this->load_set_configuration($configuration);
     }
 
-    private function get_config($target,$configTree) {
+      private function get_config($target,$configTree) {
         $rpc = "<rpc>";
         $rpc.="<get-config>";
         $rpc.="<source>";
@@ -678,7 +688,7 @@ class Device {
     }
 
     /**
-    *etrieve the candidate configuration, or part of the configuration.
+    *Retrieve the candidate configuration, or part of the configuration.
     *If no argument is specified, then the
     *configuration is returned for
     *&gt;<configuration$gt;&lt;/configuration&gt;  
@@ -687,7 +697,7 @@ class Device {
     *&lt;configuration&gt;&lt;/configuration&gt;
     *return configuration data as XML object.
     */
-    public function get_candidate_config() {
+     public function get_candidate_config() {
         if(func_num_args() == 1)
             return $this->convert_to_xml($this->get_config("candidate",func_get_arg(0)));
         return $this->convert_to_xml($this->get_config("candidate","<configuration></configuration>"));
@@ -703,7 +713,7 @@ class Device {
     *&lt;configuration&gt;&lt;/configuration&gt;
     @return configuration data as XML object.
     */
-    public function get_running_config() {
+     public function get_running_config() {
         if (func_num_args() ==1)
             return $this->convert_to_xml($this->get_config("running",func_get_arg(0)));
         return $this->convert_to_xml($this->get_config("running","<configuration></configuration>"));
@@ -721,7 +731,8 @@ class Device {
     *}"
     *will load 'ftp' under the 'systems services' hierarchy.
     *OR
-    *&lt;configuration&gt;&lt;system&gt;&lt;serivces&gt;ftp&lt;/services&gt;&lt;/system&gt;&lt;/configuration&gt;
+    *&lt;configuration&gt;&lt;system&gt;&lt;serivces&gt;ftp&lt;/services&gt;&lt;/system&gt;&lt;/
+     configuration&gt;
     *will load 'ftp' under the 'systems services' hierarchy.
     *OR
     *"set system services ftp"
@@ -731,7 +742,7 @@ class Device {
     *NOTE : This parameter's value is redundant in case the file contains 
     *configuration in 'set' format.
     */
-    public function commit_this_configuration($configFile,$loadType) {
+     public function commit_this_configuration($configFile,$loadType) {
         $configuration = "";
         $file = fopen($configFile,"r");
         if (!$file)
@@ -754,21 +765,24 @@ class Device {
             die ("Unclean lock operation. Cannot proceed further");
     }
 
-
     /*
     *Closes the Netconf session
     */
-    public function close() {
-        $rpc = "<rpc>";
+     public function close() {
+	$rpc = "<rpc>";
         $rpc.="<close-session/>";
         $rpc.="</rpc>";
         $rpc.="]]>]]>\n";
         $rpcReply = $this->get_rpc_reply($rpc);
         $this->last_rpc_reply = $rpcReply;
-        fclose($this->stream);
-    }
-
-    private function create_hello_rpc(array $capabilities) {
+        fclose($this->stream);  
+     }
+     /*
+      * Create hello_rpc packet with user defined capabilities
+      * @param capabilities
+      * capabilities specified by user
+     */
+      private function create_hello_rpc(array $capabilities) {
         $hello_rpc = "<hello>\n";
         $hello_rpc.="<capabilities>\n";
         foreach ($capabilities as $capIter) {
@@ -780,7 +794,10 @@ class Device {
         return $hello_rpc;
     }
 
-    private function get_default_client_capabilities() {
+    /*
+     * function to generate default capabilities of client
+    */
+     private function get_default_client_capabilities() {
         $defaultCap[0] = "urn:ietf:params:xml:ns:netconf:base:1.0";
         $defaultCap[1] = "urn:ietf:params:xml:ns:netconf:base:1.0#candidate";
         $defaultCap[2] = "urn:ietf:params:xml:ns:netconf:base:1.0#confirmed-commit";
@@ -789,11 +806,27 @@ class Device {
         return $defaultCap;
     }
 
-    private function default_hello_rpc() {
+    /*
+     *  function to generate default hello_rpc packet.
+     *  It calls get_default_client_capabilities() function to generate default capabilites of client
+    */
+     private function default_hello_rpc() {
         $defaultCap = $this->get_default_client_capabilities();
         return $this->create_hello_rpc($defaultCap);
     }
-   
+    
+    /*
+     * method missing function
+     * It is called when some operation command is called directly 
+     * For Example
+     * $device_name->get_alarm_information()
+     * this will call __call()function which will call execute_rpc("get-alarm-information")
+     * It will output alarm information which can be obtained from execute_rpc("get-alarm-information")
+    */        
+    public function __call($function,$args){
+	$change=preg_replace('/_/','-',$function);
+	$this->execute_rpc($change);
+    } 
 }
 
 ?>
