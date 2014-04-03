@@ -101,8 +101,3 @@ Dependencies
 ============
 The API requires installation of PHP extension for expect library.
 http://pecl.php.net/package/expect
-
-Authors and Contributors
-========================
-* [Ankit Jain](http://www.linkedin.com/in/ankitj093), Juniper Networks 
-
