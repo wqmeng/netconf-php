@@ -64,20 +64,14 @@ SYNOPSIS
         ?>
 
         Sample Output:
-  	    <rpc-reply xmlns=".......">
-         <system-information>
-         <hardware-model>olive</hardware-model>
-         <os-name>junos</os-name>
-         <os-version>13.2R4</os-version>
-         <host-name>foo</host-name>
-         </system-information>
+  	     <rpc-reply xmlns=".......">
+             <system-information>
+                 <hardware-model>olive</hardware-model>
+                 <os-name>junos</os-name>
+                 <os-version>13.2R4</os-version>
+                 <host-name>foo</host-name>
+             </system-information>
          </rpc-reply>
-
-
-DOCUMENTATION
-=============
-
-Please refer to the PHP TOOLKIT Guide, [here]
 
 
 License
@@ -102,9 +96,4 @@ Dependencies
 ============
 The API requires installation of PHP extension for expect library.
 http://pecl.php.net/package/expect
-
-
-Authors and Contributors
-========================
-* [Ankit Jain](http://www.linkedin.com/in/ankitj093), Juniper Networks 
 
