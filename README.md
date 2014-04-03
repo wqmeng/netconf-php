@@ -22,7 +22,7 @@ PHP NETCONF APIs are designed to provide the same capabilties that a user would 
 REQUIREMENTS
 ============
 
-Installation requires Php and php-expect module. PHP-NETCONF_APIs are successfully tested in php5.5.3 
+Installation requires Php and php-expect module. PHP NETCONF APIs are successfully tested in php5.5.3 
 
 INSTALLATION
 ============
@@ -32,7 +32,8 @@ Note: These installation steps are successfully tested in Fedora 15 i686 and Cen
        For detailed steps about installation, refer to INSTALL.md file.
 	
        Download netconf-php folder in zip form at any path in your Desktop
-       * wget  -O /any/path/in/Desktop/netconf-php-master.zip https://github.com/Juniper/netconf-php/archive/master.zip           (usually default path of php is /usr/share/php)
+       * wget  -O /any/path/in/Desktop/netconf-php-master.zip https://github.com/Juniper/netconf-php/archive/master.zip           
+       (usually default path of php is /usr/share/php)
        * unzip netconf-php-master.zip
        * Copy netconf folder in /usr/share/php (default php path)
        include this path in your API for Device.php 
@@ -47,10 +48,10 @@ SYNOPSIS
         $d= new Device("hostname", "username", "passwd");
         $d->connect();
         echo "connected to device";
-        //getting reply from server using execute_rpc() method
+        //getting reply from server 
         try
         {
-        $inven=$d->execute_rpc("get-system-information");
+        $inven=$d->get_system_information();
         echo $inven->to_string();
         }
         catch(Exception $e)
@@ -64,13 +65,13 @@ SYNOPSIS
 
         Sample Output:
   	    <rpc-reply xmlns=".......">
-            <system-information>
-            <hardware-model>olive</hardware-model>
-            <os-name>junos</os-name>
-            <os-version>13.2R4</os-version>
-            <host-name>foo</host-name>
-            </system-information>
-            </rpc-reply>
+         <system-information>
+         <hardware-model>olive</hardware-model>
+         <os-name>junos</os-name>
+         <os-version>13.2R4</os-version>
+         <host-name>foo</host-name>
+         </system-information>
+         </rpc-reply>
 
 
 DOCUMENTATION
@@ -101,3 +102,9 @@ Dependencies
 ============
 The API requires installation of PHP extension for expect library.
 http://pecl.php.net/package/expect
+
+
+Authors and Contributors
+========================
+* [Ankit Jain](http://www.linkedin.com/in/ankitj093), Juniper Networks 
+
