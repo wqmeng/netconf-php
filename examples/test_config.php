@@ -1,5 +1,5 @@
 <?php
-include('netconf-php-master/netconf/Device.php');
+include('netconf/Device.php');
 
 //creating a new device and establishing NETCONF session
 $d= new Device("hostname", "username","passwd");
@@ -22,7 +22,10 @@ if($islocked)
 //can be done by any of these three steps
 //$d->load_set_configuration($str1);
 //$d->load_text_configuration($str2,"merge");
-$d->load_xml_configuration($ftp_config->to_string(),"merge");
+$d->load_xml_configuration($str3,"merge");
+
+// when loading xmlbuider class
+//$d->load_xml_configuration($ftp_config->to_string(),"merge");
 $d->commit();
 }
 

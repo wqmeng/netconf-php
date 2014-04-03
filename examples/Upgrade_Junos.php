@@ -1,7 +1,7 @@
 <?php
 //program to remotely upgrade Junos
 
-include('netconf-php-master/netconf/Device.php');
+include('netconf/Device.php');
 
 //creating a new device and establishing NETCONF session
 $d= new Device("hostname", "username", "Passwd");
