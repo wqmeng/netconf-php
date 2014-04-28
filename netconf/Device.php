@@ -2,7 +2,7 @@
 
 error_reporting(0);
 //ini_set('expect.loguser', 0);
-// if set it off, then will not be able what server is sending like capabilities etc
+// if set it off, then will not be able to see what server is sending like capabilities and other information 
 
 include('CommitException.php');
 include('LoadException.php');
