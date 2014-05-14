@@ -2,7 +2,7 @@
 
 error_reporting(0);
 //ini_set('expect.loguser', 0);
-// if set it off, then will not be able to see what server is sending like capabilities and other information 
+// if set it off, then user will not be able to see what server is sending,like capabilities and other information.
 
 include('CommitException.php');
 include('LoadException.php');
@@ -40,11 +40,13 @@ class Device {
 	}
 	else
 	{
-	print ("original is called");
 	$this->Device_string(func_get_args());
 	}
-     }
+    }
     
+    /** This function is called when user passes list of string as arguments
+    * while creating object of Device class
+    */
     public function Device_string($arr){
 	if(count ($arr) == 4) {
            if(is_array($arr[3])) {
@@ -75,28 +77,31 @@ class Device {
         $this->userName = $arr[1];
         $this->password = $arr[2];
 	$this->connectTimeout = 10;
-	$this->replyTimeout =35;
+	$this->replyTimeout =600;
         $this->is_connected = false;
     }
  
+    /** This function is called when user passes argument as array,
+    *  while creating object of Device class
+    */
     public function Device_array(array $params)
     {
-       if( (empty($params["hostname"])||is_null($params["hostname"])) && (is_string($params["hostname"])) ) {
-	 die ("host name should not be empty or null");
-	}
+     if( $params["hostname"]!=null && !(empty($params["hostname"])) && (is_string($params["hostname"])))  		{
+	$this->hostName = $params["hostname"];		
+ 	}
 	else{
-	$this->hostName = $params["hostname"];
+	die ("host name should be string and should not be empty or null\n");
 	}
 
 	if (empty($params["username"]) || is_null( $params["username"] ) ){
-	die ("user name hould not be empty or null");
+	die ("user name should not be empty or null\n");
 	}
 	else{
 	$this->userName = $params["username"];
 	}
 
 	if (empty($params["password"]) || is_null( $params["password"] ) ){
-	die("user name hould not be empty or null");
+	die("user name should not be empty or null\n");
 	}
 	else{
 	$this->password = $params["password"];
@@ -117,22 +122,21 @@ class Device {
 	$this->hello_rpc = $this->default_hello_rpc();
 	}
         $this->connectTimeout=10;
-	$this->replyTimeout= 35;
+	$this->replyTimeout= 600;
 	$this->is_connected =false;
      }
  	
-  /**
+    /**
     *Prepares a new <code?Device</code> object, either with default 
     *client capabilities and default port 830, or with user specified
     *capabilities and port no, which can then be used to perform netconf 
     *operations.
     */
     public function connect() {
-	print ("\ninside connect function\n");
-        $this->stream = expect_popen("ssh -o ConnectTimeout=$this->connectTimeout $this->userName@$this->hostName -p $this->port -s netconf");
-	print ("after expect");
-        $flag = true;
-        while ($flag) {
+    $this->stream = expect_popen("ssh -o ConnectTimeout=$this->connectTimeout $this->userName@$this->hostName -p $this->port -s netconf");        
+	ini_set('expect.timeout',  $this->replyTimeout);
+	$flag = true;        
+	while ($flag) {
         switch (expect_expectl($this->stream,array (
                 array("Password:","PASSWORD"),
                 array("yes/no)?","YESNO"),
@@ -184,23 +188,23 @@ class Device {
                 }
         }
         $this->is_connected = true;
-}
+    }
 
-   /**
-   Sends the Hello capabilities to the netconf server.
-   */
-   private function send_hello($hello) {
+    /**
+    *Sends the Hello capabilities to the netconf server.
+    */
+    private function send_hello($hello) {
       $reply = "";
       $reply = $this->get_rpc_reply($hello);
       $serverCapability = $reply;
       $this->last_rpc_reply = $reply;
-      }
+    }
 
     /**
     *Sends the RPC as a string and returns the response as a string.
     */
     private function get_rpc_reply($rpc) {
-        $rpc_reply = "";
+	$rpc_reply = "";
 	fwrite($this->stream,$rpc."\n");
 	while (1) {
             $line = fgets($this->stream);
@@ -266,11 +270,11 @@ class Device {
         return new XML($root,$dom);
       }
 
-    /*
+    /**
     @retrun the last RPC Reply sent by Netconf server.
     */
     public function get_last_rpc_reply() {
-        return $this->last_rpc_reply;
+      return $this->last_rpc_reply;
     }
 
     /**
@@ -338,26 +342,25 @@ class Device {
     }
 
     /**
-     * set connectTimeout of the Netconf server
-     * @param connectTimeout
-     * is the connection timeout which is to be set
-     */
-    public function setConnectTimeout($connectTimeout){
+    * set connectTimeout of the Netconf server
+    * @param connectTimeout
+    * is the connection timeout which is to be set
+    */
+    public function setConnectTimeout($ctime){
       if($this->is_connected)
-      throw new NetconfException("Can't change the connect timeout value for the live device. Close the device first");
+      throw new NetconfException("Can't change connect timeout value for live device. Close the device first");
       else
       $this->connectTimeout= $ctime;
        }
 
-     /**
-       * set replyTimeout of the Netconf server
-       * @param replyTimeout
-       * is the reply timeout in which reply should come from server
-       */
-
-     public function setReplyTimeout($rtime){
-      if($this->is_connected)
-      throw new NetconfException("Can't change reply Timeout value for the live device. Close the device first");
+    /**
+    * set replyTimeout of the Netconf server
+    * @param replyTimeout
+    * is the reply timeout in which reply should come from server
+    */
+    public function setReplyTimeout($rtime){
+      if($this->is_connected){
+      throw new NetconfException("Can't change reply timeout value for live device. Close the device first");}
       else
       $this->replyTimeout=$rtime;
 	}
@@ -380,11 +383,11 @@ class Device {
         return false;
     }
 
-     /**
+    /**
     *Check if the last RPC reply returned from Netconf server has any warning.
     *@return true if any warnings are found in last RPC reply.
     */
-     public function has_warning() {
+    public function has_warning() {
         if(!$this->is_connected)
             throw new NetconfException("No RPC executed yet, you need to establish a connection first");
         if ($this->last_rpc_reply == "" || !(strstr($this->last_rpc_reply,"<rpc-error>")))
@@ -403,7 +406,7 @@ class Device {
     *contain &lt;ok&gt; tag
     *@return true if &lt;ok&gt; tag is found in last RPC reply.
     */
-     public function is_ok() {        
+    public function is_ok() {        
         if(!$this->is_connected)
             throw new NetconfException("No RPC executed yet, you need to establish a connection first");
         if ($this->last_rpc_reply!=null && strstr($this->last_rpc_reply,"<ok/>"))
@@ -435,7 +438,7 @@ class Device {
     *Unlocks the candidate configuration.
     *@return true if successful.
     */
-     public function unlock_config() {
+    public function unlock_config() {
         $rpc = "<rpc>";
         $rpc.="<unlock>";
         $rpc.="<target>";
@@ -853,7 +856,7 @@ class Device {
             throw new NetconfException ("Unclean lock operation. Cannot proceed further");
     }
 
-    /*
+    /**
     *Closes the Netconf session
     */
      public function close() {
@@ -865,10 +868,10 @@ class Device {
         $this->last_rpc_reply = $rpcReply;
         fclose($this->stream);  
      }
-     /*
-      * Create hello_rpc packet with user defined capabilities
-      * @param capabilities
-      * capabilities specified by user
+    /**
+     * Create hello_rpc packet with user defined capabilities
+     * @param capabilities
+     * capabilities specified by user
      */
       private function create_hello_rpc(array $capabilities) {
         $hello_rpc = "<hello>\n";
@@ -882,9 +885,9 @@ class Device {
         return $hello_rpc;
     }
 
-    /*
+    /**
      * function to generate default capabilities of client
-    */
+     */
      private function get_default_client_capabilities() {
         $defaultCap[0] = "urn:ietf:params:xml:ns:netconf:base:1.0";
         $defaultCap[1] = "urn:ietf:params:xml:ns:netconf:base:1.0#candidate";
@@ -894,23 +897,23 @@ class Device {
         return $defaultCap;
     }
 
-    /*
+    /**
      *  function to generate default hello_rpc packet.
      *  It calls get_default_client_capabilities() function to generate default capabilites of client
-    */
+     */
      private function default_hello_rpc() {
         $defaultCap = $this->get_default_client_capabilities();
         return $this->create_hello_rpc($defaultCap);
     }
     
-    /*
+    /**
      * method missing function
      * It is called when some operation command is called directly 
      * For Example
      * $device_name->get_alarm_information()
      * this will call __call()function which will call execute_rpc("get-alarm-information")
      * It will output alarm information which can be obtained from execute_rpc("get-alarm-information")
-    */        
+     */        
     public function __call($function,$args){
 	$change=preg_replace('/_/','-',$function);
 	$reply=$this->execute_rpc($change);
