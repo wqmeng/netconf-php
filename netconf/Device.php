@@ -139,6 +139,7 @@ class Device {
 	while ($flag) {
         switch (expect_expectl($this->stream,array (
                 array("Password:","PASSWORD"),
+                array("password:","PASSWORD"),
                 array("yes/no)?","YESNO"),
                 array("passphrase","PASSPHRASE"),
                 array("]]>]]>","NOPASSPHRASE"),
@@ -148,6 +149,7 @@ class Device {
 		    fwrite($this->stream,$this->password."\n");
                     switch (expect_expectl($this->stream,array (
                         array("Password:","PASSWORD"),
+                        array("password:","PASSWORD"),
                         array("]]>]]>","hello"),
                         ))) { 
                         case "PASSWORD":
@@ -162,6 +164,7 @@ class Device {
                     fwrite($this->stream,$this->password."\n");
                     switch (expect_expectl($this->stream,array (
                         array("Password:","PASSWORD"),
+                        array("password:","PASSWORD"),
                         array("]]>]]>","hello"),
                         ))) {
                         case "PASSWORD":
